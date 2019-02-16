@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
+#include "sysBat.h"
 
 #define READBUFSIZE	4096
 
@@ -11,11 +11,6 @@ const char battery_present_entry[] = "present";
 const char power_supply_type_entry[] = "type";
 const char capacity_entry[] = "capacity";
 const char battery_type[] = "Battery";
-
-struct BatStats {
-	char name[NAME_MAX+1];
-	int capacity;
-};
 
 struct BatStats * getBatStats() {
 	unsigned int numBats = 0;
@@ -119,19 +114,4 @@ struct BatStats * getBatStats() {
 	}
 	
 	return batStats;
-}
-
-int main(int argc,char* argv) {
-	struct BatStats * batStats = getBatStats();
-	struct BatStats * currBatStats = batStats;
-	
-	if(batStats!=NULL) {
-		for(currBatStats = batStats;currBatStats->name[0] != '\0';currBatStats++) {
-			fprintf(stderr,"Bat %s, level %d\n",currBatStats->name,currBatStats->capacity);
-		}
-		
-		free((void *)batStats);
-	}
-	
-	return 0;
 }
