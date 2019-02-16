@@ -26,11 +26,11 @@
 
 #define READBUFSIZE	4096
 
-const char power_supply_basedir[] = "/sys/class/power_supply";
-const char battery_present_entry[] = "present";
-const char power_supply_type_entry[] = "type";
-const char capacity_entry[] = "capacity";
-const char battery_type[] = "Battery";
+const static char power_supply_basedir[] = "/sys/class/power_supply";
+const static char battery_present_entry[] = "present";
+const static char power_supply_type_entry[] = "type";
+const static char capacity_entry[] = "capacity";
+const static char battery_type[] = "Battery";
 
 struct BatStats * getBatStats() {
 	unsigned int numBats = 0;
