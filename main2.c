@@ -22,17 +22,42 @@
 #include <stdlib.h>
 #include "sysBatt.h"
 
+#include <time.h>
+#include <string.h>
+
+const static char NO_BATTERY[] = "No battery";
+
+
+char date_label[] = "%d-%b-%y (%a); %I:%M %p";
+
 int main(int argc,char** argv) {
-	struct BattStats * battStats = getBattStats();
-	struct BattStats * currBattStats = battStats;
 	
-	if(battStats!=NULL) {
-		for(currBattStats = battStats;currBattStats->name[0] != '\0';currBattStats++) {
-			fprintf(stderr,"Batt %s, level %d\n",currBattStats->name,currBattStats->capacity);
-		}
-		
-		free((void *)battStats);
-	}
+    char buf[150];
+    time_t now = time ((time_t *) 0);
+    struct tm *tm = localtime (&now);
+    size_t off_date = 0;
+    memset (buf, 0, sizeof(buf));
+    
+      struct BattStats * bStats = getBattStats();
+      
+      if ( bStats != NULL ) {
+        if(bStats[0].name[0] != '\0') {
+          snprintf(buf,sizeof(buf),"%s %d%% ",bStats[0].name,bStats[0].capacity);
+        }
+        free((void *)bStats);
+      }
+      
+      if (buf[0] == '\0') {
+        strcpy(buf,NO_BATTERY);
+        off_date = sizeof(NO_BATTERY);
+        buf[off_date] = ' ';
+      } else {
+        off_date = strlen(buf);
+      }
+    
+    strftime (buf+off_date, sizeof(buf)-off_date-1, date_label, tm);
 	
+	puts(buf);
+
 	return 0;
 }

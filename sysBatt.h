@@ -18,16 +18,16 @@
  * 
  * Author: Jose M. Fernandez (GitHub user: jmfernandez)
  */
-#ifndef _SYSBAT_H
-#	define _SYSBAT_H
+#ifndef _SYSBATT_H
+#	define _SYSBATT_H
 
 #include <dirent.h>
 
-struct BatStats {
-	char name[NAME_MAX+1];
+struct BattStats {
+	char name[NAME_MAX];
 	int capacity;
 };
 
-struct BatStats * getBatStats();
+struct BattStats * getBattStats();
 
-#endif	/*_SYSBAT_H*/
+#endif	/*_SYSBATT_H*/
