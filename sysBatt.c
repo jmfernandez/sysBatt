@@ -43,10 +43,6 @@ struct BattStats * getBattStats() {
 		while((entry = readdir(psDir)) != NULL) {
 			/* The directory is interesting. Now we are going to open it */
 			if(entry->d_name[0] != '.' && entry->d_type != DT_REG) {
-				/* saving the position */
-				long nextPos = telldir(psDir);
-				closedir(psDir);
-				
 				/* Get the path to the battery */
 				char * battName = strdup(entry->d_name);
 				size_t battNameLen = strlen(battName);
@@ -55,6 +51,10 @@ struct BattStats * getBattStats() {
 				memcpy(battDirPath,power_supply_basedir,sizeof(power_supply_basedir)-1);
 				battDirPath[sizeof(power_supply_basedir)-1] = '/';
 				strcpy(battDirPath+sizeof(power_supply_basedir),entry->d_name);
+				
+				/* saving the position */
+				long nextPos = telldir(psDir);
+				closedir(psDir);
 				
 				DIR * battDir = NULL;
 				if((battDir = opendir(battDirPath))!=NULL) {
